@@ -78,11 +78,6 @@ func (server *TemperatureApi) GetTemperature(deviceID string, startTime, endTime
 		return ResponseBody{}, errors.New("device ID cannot be empty")
 	}
 
-	if _, ok := server.Data[deviceID]; !ok {
-		// no data for this sensor
-		return ResponseBody{}, errors.New("no data for this device ID")
-	}
-
 	if endTime.Before(startTime) {
 		return ResponseBody{}, errors.New("end time cannot be before start time")
 	}
@@ -90,6 +85,11 @@ func (server *TemperatureApi) GetTemperature(deviceID string, startTime, endTime
 	// Read-lock the data structure for concurrent safety
 	server.mutex.RLock()
 	defer server.mutex.RUnlock()
+
+	if _, ok := server.Data[deviceID]; !ok {
+		// no data for this sensor
+		return ResponseBody{}, errors.New("no data for this device ID")
+	}
 
 	// retrieve and slice data
 	data := server.Data[deviceID]
