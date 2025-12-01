@@ -1,0 +1,4 @@
+This is a simple demonstration of a REST endpoint for recording IoT sensor data (temperature, in this case) as a time series.
+This sample shows some best-practices that I like to follow with simple endpoints such
+as input validation and using a mutex for concurrency.
+Note that if this were a real endpoint, HTTP middleware would be used and I would use a production-quality datastore (in-memory backed up by persistent storage). For the purposes of this sample, I'm using a simple in-memory map to store device data
